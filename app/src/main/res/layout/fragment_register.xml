@@ -1,14 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".UI.register.screen.RegisterFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/createAccountText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="160dp"
+        android:letterSpacing="0.02"
+        android:text="@string/create_account"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</FrameLayout>
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/emailField"
+        android:layout_width="350dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="55dp"
+        android:background="@drawable/rounded_corners"
+        android:elevation="7dp"
+        android:hint="@string/email"
+        android:letterSpacing="0.01"
+        android:paddingStart="41dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        app:layout_constraintEnd_toEndOf="@id/createAccountText"
+        app:layout_constraintStart_toStartOf="@id/createAccountText"
+        app:layout_constraintTop_toBottomOf="@id/createAccountText"
+        tools:ignore="RtlSymmetry" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/passwordField"
+        android:layout_width="350dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="38dp"
+        android:background="@drawable/rounded_corners"
+        android:elevation="7dp"
+        android:hint="@string/password"
+        android:letterSpacing="0.01"
+        android:paddingStart="41dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        app:layout_constraintEnd_toEndOf="@id/emailField"
+        app:layout_constraintStart_toStartOf="@id/emailField"
+        app:layout_constraintTop_toBottomOf="@id/emailField"
+        tools:ignore="RtlSymmetry" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/passwordRepeatField"
+        android:layout_width="350dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="38dp"
+        android:background="@drawable/rounded_corners"
+        android:elevation="7dp"
+        android:hint="@string/repeat_password"
+        android:letterSpacing="0.01"
+        android:paddingStart="41dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        app:layout_constraintEnd_toEndOf="@id/passwordField"
+        app:layout_constraintStart_toStartOf="@id/passwordField"
+        app:layout_constraintTop_toBottomOf="@id/passwordField"
+        tools:ignore="RtlSymmetry" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

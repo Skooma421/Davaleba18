@@ -1,11 +1,12 @@
 package com.example.davaleba18.network.api
 
 import com.example.davaleba18.network.models.AuthRequest
+import com.example.davaleba18.network.models.LoginResponse
 import com.example.davaleba18.network.models.RegisterResponse
 import retrofit2.http.Body
 import retrofit2.http.POST
 
-interface AuthenticationApi {
+interface AuthApiService {
     @POST("v3/542e71ad-2f52-4831-9509-ba629973ba6d")
     suspend fun login(@Body request: AuthRequest): LoginResponse
 
