@@ -10,4 +10,6 @@
     <string name="register">register</string>
     <string name="create_account">Create Account</string>
     <string name="repeat_password">Repeat password</string>
+    <string name="log_out">Log Out</string>
+    <string name="remember_me">Remember me</string>
 </resources>
