@@ -3,6 +3,7 @@ package com.example.davaleba18.UI.register.screen
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.setFragmentResult
@@ -20,6 +21,11 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
 
     private val viewModel: RegisterViewModel by viewModels()
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        bindViewActionListener()
+    }
+
     override fun bindViewActionListener() {
         binding.apply {
             emailField.addTextChangedListener { validateFields() }
@@ -27,9 +33,9 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
             passwordRepeatField.addTextChangedListener { validateFields() }
 
             registerButton.setOnClickListener {
-                val email = emailField.text.toString()?.trim() ?: ""
-                val password = passwordField.text.toString()?.trim() ?: ""
-                val passwordRepeat = passwordRepeatField.text.toString()?.trim() ?: ""
+                val email = emailField.text.toString().trim()
+                val password = passwordField.text.toString().trim()
+                val passwordRepeat = passwordRepeatField.text.toString().trim()
 
                 if (email.isEmpty() || password.isEmpty() || passwordRepeat.isEmpty()) {
                     showMessage("Please fill in all fields")
@@ -51,7 +57,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                 try {
                     val sharedPref =
                         requireContext().getSharedPreferences("auth", Context.MODE_PRIVATE)
-                    val existingEmail = sharedPref.getString("register_email", null)
+                    val existingEmail = sharedPref.getString("registered_email", null)
 
                     if (existingEmail == email) {
                         showMessage("Account with this email already exists")
@@ -102,8 +108,6 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
         val email = binding.emailField.text?.toString()?.trim() ?: ""
         val password = binding.passwordField.text?.toString()?.trim() ?: ""
         val passwordRepeat = binding.passwordRepeatField.text?.toString()?.trim() ?: ""
-        binding.registerButton.isEnabled =
-            email.isValidEmail() && password.isValidPassword() && password == passwordRepeat
     }
 
     private fun showMessage(message: String) {

@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.text.method.PasswordTransformationMethod
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.setFragmentResultListener
@@ -13,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.davaleba18.R
+import com.example.davaleba18.SessionManager
 import com.example.davaleba18.UI.login.vm.LoginViewModel
 import com.example.davaleba18.databinding.FragmentLoginBinding
 import com.example.davaleba18.util.BaseFragment
@@ -31,14 +33,22 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
         val shouldLogout = arguments?.getBoolean("shouldLogout", false) ?: false
         if (shouldLogout) {
             try {
-                val sharedPref = requireContext().getSharedPreferences("auth", Context.MODE_PRIVATE)
-                sharedPref.edit().clear().apply()
+                SessionManager.clearSession(requireContext())
                 viewModel.clearLoginState()
                 showMessage("Logged out successfully")
             } catch (e: IOException) {
                 Log.e("LoginFragment", "SharedPreferences clear failed", e)
                 showMessage("Error clearing session")
             }
+        } else {
+            checkAutoLogin()
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        SessionManager.getSession(requireContext())?.let { email ->
+            binding.emailField.setText(email)
         }
     }
 
@@ -100,7 +110,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
 
                 loginButton.isEnabled = false
-                viewModel.login("eve.holt@reqres.in", "cityslicka", rememberMe, email)
+                viewModel.login(email, password, rememberMe, email)
             }
 
             registerButton.setOnClickListener {
@@ -128,6 +138,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                             if (token.isNotEmpty()) {
                                 val email = emailField.text.toString().trim()
                                 if (rememberMeCheckBox.isChecked) {
+                                    SessionManager.saveSession(requireContext(), email, true)
                                     try {
                                         val sharedPref = requireContext().getSharedPreferences(
                                             "auth",
@@ -142,6 +153,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                                         showMessage("Error saving session")
                                         return@collectLatest1
                                     }
+                                } else {
+                                    SessionManager.saveSession(requireContext(), email, false)
                                 }
                                 showMessage("Login successful")
                                 emailField.text?.clear()
@@ -168,5 +181,24 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
     private fun showMessage(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun checkAutoLogin() {
+        try {
+            val sharedPref = requireContext().getSharedPreferences("auth", Context.MODE_PRIVATE)
+            val rememberMe = sharedPref.getBoolean("remember_me", false)
+            val savedToken = sharedPref.getString("current_token", null)
+            val savedEmail = sharedPref.getString("current_email", null)
+
+            if (rememberMe && !savedToken.isNullOrEmpty() && !savedEmail.isNullOrEmpty()) {
+                showMessage("Welcome back!")
+                val bundle = Bundle().apply {
+                    putString("email", savedEmail)
+                }
+                findNavController().navigate(R.id.action_login_to_home, bundle)
+            }
+        } catch (e: IOException) {
+            Log.e("LoginFragment", "Auto-login check failed", e)
+        }
     }
 }

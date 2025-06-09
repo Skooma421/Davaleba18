@@ -8,21 +8,29 @@ import com.example.davaleba18.network.models.RegisterResponse
 import com.example.davaleba18.network.retrofit.RetrofitClient
 import kotlinx.coroutines.launch
 
-class RegisterViewModel: ViewModel() {
+class RegisterViewModel : ViewModel() {
     val registerResponse = MutableLiveData<RegisterResponse>()
-    val errorMessage = MutableLiveData<String>()
+    val errorMessage = MutableLiveData<String?>()
+    val isLoading = MutableLiveData<Boolean>()
 
-    fun register(email: String, password: String ){
+    fun register(email: String, password: String) {
         viewModelScope.launch {
+            isLoading.value = true
             try {
-                val response = RetrofitClient.authApiService.register(AuthRequest(email,password))
-                if (email == "eve.holt@reqres.in"){
+                val response = RetrofitClient.authApiService.register(AuthRequest(email, password))
+                if (email == "eve.holt@reqres.in") {
                     registerResponse.value = response
-                }else {
+                } else {
                     errorMessage.value = "Invalid email"
                 }
-            }catch (e: Exception){
-                errorMessage.value = e.message ?: "Unknown error"
+            } catch (e: Exception) {
+                errorMessage.value = when {
+                    e.message?.contains("HTTP 400") == true -> "User already exists"
+                    e.message?.contains("network") == true -> "Network error"
+                    else -> e.message ?: "Registration failed"
+                }
+            } finally {
+                isLoading.value = false
             }
         }
     }
