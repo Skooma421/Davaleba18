@@ -18,7 +18,7 @@
         android:id="@+id/loginTextTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="65dp"
         android:letterSpacing="0.02"
         android:text="@string/hello"
         android:textColor="@color/black"
@@ -32,7 +32,7 @@
         android:layout_width="15dp"
         android:layout_height="18dp"
         android:layout_marginStart="14dp"
-        android:background="#9A9A9A"
+        android:elevation="8dp"
         android:src="@drawable/img_1"
         app:layout_constraintBottom_toBottomOf="@id/emailField"
         app:layout_constraintStart_toStartOf="@id/emailField"
@@ -41,8 +41,8 @@
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/emailField"
         android:layout_width="350dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="55dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="85dp"
         android:background="@drawable/rounded_corners"
         android:elevation="7dp"
         android:hint="@string/email"
@@ -59,7 +59,6 @@
         android:layout_width="15dp"
         android:layout_height="18dp"
         android:layout_marginStart="14dp"
-        android:background="#9A9A9A"
         android:elevation="8dp"
         android:src="@drawable/img_2"
         app:layout_constraintBottom_toBottomOf="@id/passwordField"
@@ -80,7 +79,7 @@
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/passwordField"
         android:layout_width="350dp"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         android:layout_marginTop="39dp"
         android:background="@drawable/rounded_corners"
         android:elevation="7dp"
@@ -115,8 +114,8 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/loginButton"
-        android:layout_width="160dp"
-        android:layout_height="70dp"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/rounded_corners"
         android:backgroundTint="#F97794"
@@ -130,8 +129,8 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/registerButton"
-        android:layout_width="140dp"
-        android:layout_height="60dp"
+        android:layout_width="135dp"
+        android:layout_height="55dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/rounded_corners"
         android:backgroundTint="#623AA2"

@@ -2,6 +2,7 @@ package com.example.davaleba18.UI.register.screen
 
 import android.content.Context
 import android.os.Bundle
+import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -81,7 +82,6 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                 findNavController().navigate(R.id.action_register_to_login)
             }
 
-
             viewModel.registerResponse.observe(viewLifecycleOwner) { response ->
                 registerButton.isEnabled = true
                 if (response?.token?.isNotEmpty() == true) {
@@ -94,6 +94,31 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                     findNavController().navigate(R.id.action_register_to_login)
                 }
             }
+            eyeIcon0.setOnClickListener {
+                passwordField.transformationMethod =
+                    if (passwordField.transformationMethod == null) {
+                        PasswordTransformationMethod.getInstance()
+                    } else {
+                        null
+                    }
+                eyeIcon0.setImageResource(
+                    if (passwordField.transformationMethod == null) R.drawable.eye_closed_icon else R.drawable.eye_icon
+                )
+                passwordField.setSelection(passwordField.text?.length ?: 0)
+            }
+
+            eyeIcon1.setOnClickListener {
+                passwordRepeatField.transformationMethod =
+                    if (passwordRepeatField.transformationMethod == null) {
+                        PasswordTransformationMethod.getInstance()
+                    } else {
+                        null
+                    }
+                eyeIcon1.setImageResource(
+                    if (passwordRepeatField.transformationMethod == null) R.drawable.eye_closed_icon else R.drawable.eye_icon
+                )
+                passwordRepeatField.setSelection(passwordRepeatField.text?.length ?: 0)
+            }
 
             viewModel.errorMessage.observe(viewLifecycleOwner) { error ->
                 if (!error.isNullOrEmpty()) {
@@ -102,6 +127,8 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                 }
             }
         }
+
+
     }
 
     private fun validateFields() {
@@ -109,7 +136,8 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
         val password = binding.passwordField.text?.toString()?.trim() ?: ""
         val passwordRepeat = binding.passwordRepeatField.text?.toString()?.trim() ?: ""
 
-        binding.registerButton.isEnabled = email.isNotEmpty() || password.isNotEmpty() || passwordRepeat.isNotEmpty()
+        binding.registerButton.isEnabled =
+            email.isNotEmpty() || password.isNotEmpty() || passwordRepeat.isNotEmpty()
     }
 
     private fun showMessage(message: String) {
