@@ -108,6 +108,8 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
         val email = binding.emailField.text?.toString()?.trim() ?: ""
         val password = binding.passwordField.text?.toString()?.trim() ?: ""
         val passwordRepeat = binding.passwordRepeatField.text?.toString()?.trim() ?: ""
+
+        binding.registerButton.isEnabled = email.isNotEmpty() || password.isNotEmpty() || passwordRepeat.isNotEmpty()
     }
 
     private fun showMessage(message: String) {
